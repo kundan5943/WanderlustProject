@@ -1,0 +1,116 @@
+body
+{   padding: 0 !important;
+    margin: 0 !important;
+    background-color: rgb(200, 197, 115);
+     font-family: "Plus Jakarta Sans", sans-serif !important;
+     display: flex;
+     flex-direction: column;
+     min-height: 100vh;
+}
+.container
+{
+    flex: 1;
+}
+.navbar
+{
+    height: 5rem;
+}
+.nav-link
+{
+   color: black !important;
+}
+.f-info-links
+{   width: 100%;
+    color:black !important;
+}
+.f-info-socialmedia{
+    width: 100%;
+}
+.f-info a{
+    color: black;
+}
+.f-info-links a{
+    
+    color: black !important;
+}
+.f-info
+{
+    background-color: rgb(161, 157, 157);
+    
+
+ 
+    min-height: 100px;   /* OR 100vh if full screen footer */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* vertical center */
+    align-items: center;     /* horizontal center */
+    text-align: center; 
+}
+.card-img-top{
+    border-radius: 0.3rem !important;
+    width: 100% !important;
+  padding-left: 0 !important;
+  object-fit: cover !important;
+  height: 20rem;
+ 
+}
+.card-body
+{
+    padding: 0 !important;
+    padding-bottom: 20px !important;
+    padding-left: 5px !important;
+
+}
+.card-text
+{
+    font-weight: 400 !important;
+}
+.card 
+{
+    margin: 20px !important;
+   
+}
+.listing-links
+{
+    text-decoration: none;
+}
+.card-img-overlay
+{
+    opacity: 0;
+
+}
+.card-img-overlay:hover
+{
+    opacity: 0.3;
+    background-color: white;
+}
+.nwform
+{
+    margin-top: 10px !important;
+    margin-bottom: 10px;
+  
+}
+.addbtn {
+    background-color: #fe424d !important;
+    border:none !important;
+    color: white !important;
+
+}
+
+
+/* Show Page */
+
+.shw-img
+{
+     height: 25vh;
+    
+    
+}
+
+/* Review card */
+.rvwcards{
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    
+}
