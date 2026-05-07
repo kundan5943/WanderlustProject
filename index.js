@@ -23,14 +23,16 @@ const { Review, reviewSchema } = require("./Model/Review.js");
 
 const wrapAsync = require("./util/wrapAsync");
 app.engine("ejs", ejsMate);
-console.log(process.env.mongodbAtlas_Url);
+const dbUrl = process.env.mongodbAtlas_Url;
+
 const store = MongoStore.create({
-  mongoUrl: process.env.mongodbAtlas_Url,
+  mongoUrl: dbUrl,
   touchAfter: 24 * 3600,
 });
+const Secret = process.env.SECRET;
 const sessionOption = {
   store,
-  secret: "mysecretcode",
+  secret: Secret,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -41,7 +43,7 @@ const sessionOption = {
 };
 
 async function main() {
-  let mongodbAtlas_url = process.env.mongodbAtlas_Url;
+  let mongodbAtlas_url = dbUrl;
   await mongoose.connect(mongodbAtlas_url);
 }
 main()
