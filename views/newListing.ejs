@@ -5,7 +5,7 @@
        
         <div class="col-8 offset-2">
              <H3>Create A New Listing</H3>
-   <form class="row g-0.5 needs-validation" method="post" action="/wanderlust/addnew" novalidate  >
+   <form class="row g-0.5 needs-validation" method="post" action="/wanderlust/addnew" novalidate enctype="multipart/form-data" >
   <div class="col-md-12">
     <label for="title" class="form-label">Title</label>
     <input  type="text" class="form-control" placeholder="Add Title" name="title" id="title" required> 
@@ -26,9 +26,32 @@
       Looks good!
     </div>
   </div>
-  <div class="col-12">
+  <!-- <div class="col-12">
     <label for="image" class="form-label">Image</label>
     <input type="text" class="form-control" name="image" id="image" placeholder="Add image link" >
+    
+  </div> -->
+     <div class="col-6">
+    
+    <label for="dropdown"  class="form-label">Choose Category:</label>
+
+  <select name="category" class="form-control" id="dropdown" >
+    <option disabled selected>Select Category</option>
+    <option value="Trending">Trending</option>
+    <option value="Rooms">Rooms</option>
+    <option value="Iconic Cities">Iconic Cities</option>
+    <option value="Amazing pools">Amazing pools</option>
+    <option value="Camping">Camping</option>
+    <option value="Mountains">Mountains</option>
+    <option value="boats">boats</option>
+    <option value="Farms">Farms</option>
+    <option value="Beach">Beach</option>
+  </select>
+  </div>
+  <!--  -->
+   <div class="col-12">
+    <label for="image" class="form-label">Upload Image</label>
+    <input type="file" class="form-control" name="image" id="image"  required >
     
   </div>
   <div class="col-md-6">

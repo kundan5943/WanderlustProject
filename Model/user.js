@@ -1,44 +1,33 @@
-const mongoose=require("mongoose");
+const mongoose = require("mongoose");
 // const passportLocalMongoose = require('passport-local-mongoose');
-const passportLocalMongoose = require('passport-local-mongoose').default;
+const passportLocalMongoose = require("passport-local-mongoose").default;
 
-
-
-async function main()
-{
-    await  mongoose.connect('mongodb://127.0.0.1:27017/Wanderlust');
+async function main() {
+  await mongoose.connect(
+    "mongodb+srv://kundanchau624_db_user:H2w40BxaddbYE8XV@wanderlustcluster.z8mndjy.mongodb.net/?appName=WanderlustCluster",
+  );
 }
-main().then(()=>
-{
+main()
+  .then(() => {
     console.log("connection successfull");
-
-}).catch((err)=>
-{
+  })
+  .catch((err) => {
     console.log("connection successfull");
+  });
 
+const userSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+  },
 });
-
-const userSchema=new mongoose.Schema(
-    {
-        email:{
-            type:String,
-            required:true
-        }
-    }
-);
-
-
 
 userSchema.plugin(passportLocalMongoose);
 
-const User=mongoose.model("User",userSchema);
+const User = mongoose.model("User", userSchema);
 
 // let fakeuser1=new User({email:"Aaditya@gmail.com",username:"Aaditya01"});
 
 // User.register(fakeuser1,"#Aaditya8451").then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});;
 
-
-
-
-
-module.exports=User;
+module.exports = User;

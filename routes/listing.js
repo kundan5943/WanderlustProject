@@ -8,40 +8,124 @@ const isLogedIn=require('../middleware/checklogin');
 const {checkOwner}=require('../middleware/owner.js');
 // const {validateListing}=require('../middleware/validate.js');
 // const flash=require('connect-flash');
+
+
+const {storage}=require('../cloudConfig.js');
+
+
+// Multer
+const multer  = require('multer');
+const upload = multer({storage});
+
+
+const listingController=require('../Controller/listings.js');
+
 router.get("/",(req,res)=>
 {
     res.render("home.ejs");
 });
 
-router.get('/allListings', async (req,res)=>
-{
- 
-  let data= await Listing.find();
+// All Listings
+router.get('/allListings', listingController.allListings);
 
-  res.render("allListings.ejs",{data});
-});
 
-router.get('/indetail/:id',async (req,res)=>
-{   
-    
-    let id=req.params.id;
-   
-   let data= await Listing.findById(`${id}`).populate({path:'reviews',populate:{path:'author'}}).populate('owner');
-  //  console.log(data);
-    
-   if(!data)
-   {
-    req.flash("error","This Listing is not available");
-     res.redirect('/wanderlust/allListings');
-   }
-   else{
-     res.render("indetail.ejs",{data});
+// Categories
+// trending
+router.get("/allListings/trending",async(req,res)=>
+    {   
+        let str="Trending";
+        let data= await Listing.find({category:"Trending"});
+       
+        res.render("filter.ejs",{data,str});
 
-   }
-//   console.log(data.reviews);
-//   console.log(data.reviews[0].comment);
+    });
 
-});
+    router.get("/allListings/rooms",async(req,res)=>
+    {   
+        let str="rooms";
+        let data= await Listing.find({category:"Rooms"});
+       
+        res.render("filter.ejs",{data,str});
+
+    });
+    router.get("/allListings/iconic",async(req,res)=>
+    {   
+        let str="Iconic cities";
+        let data= await Listing.find({category:"Iconic Cities"});
+       
+        res.render("filter.ejs",{data,str});
+
+    });
+    router.get("/allListings/pools",async(req,res)=>
+    {   
+        let str="Amazing pools";
+        let data= await Listing.find({category:"Amazing pools"});
+       
+        res.render("filter.ejs",{data,str});
+
+    });
+    router.get("/allListings/mountains",async(req,res)=>
+    {   
+        let str="Mountains";
+        let data= await Listing.find({category:"Mountains"});
+       
+        res.render("filter.ejs",{data,str});
+
+    });
+    router.get("/allListings/camping",async(req,res)=>
+    {   
+        let str="Camping";
+        let data= await Listing.find({category:"Camping"});
+        console.log(data);
+        res.render("filter.ejs",{data,str});
+
+    });
+    router.get("/allListings/boats",async(req,res)=>
+    {   
+        let str="Boats";
+        let data= await Listing.find({category:"Boats"});
+        console.log(data);
+        res.render("filter.ejs",{data,str});
+
+    });
+    router.get("/allListings/farm",async(req,res)=>
+    {   
+        let str="Farms";
+        let data= await Listing.find({category:"Farms"});
+        console.log(data);
+        res.render("filter.ejs",{data,str});
+
+    });
+     router.get("/allListings/beach",async(req,res)=>
+    {   
+        let str="Beach";
+        let data= await Listing.find({category:"Beach"});
+       
+        res.render("filter.ejs",{data,str});
+
+    });
+
+
+
+    router.post("/allListings/search",async(req,res)=>
+        {   
+            let dta=req.body.query;
+             let data=await Listing.find({title:dta});
+            
+             if(data.length==0)
+             { 
+                data=await Listing.find({location:dta});
+                if(data.length==0)
+                {
+                    data=await Listing.find({country:dta});
+                }
+             }
+
+             console.log(data);
+             res.render("search.ejs",{data});
+        });
+
+router.get('/indetail/:id',listingController.seeIndetail);
 
 
 // Follwing comment is a mistake
@@ -54,69 +138,26 @@ router.get('/indetail/:id',async (req,res)=>
 
 
 // Edit Route
-router.get('/edit/:id',isLogedIn,checkOwner,async(req,res,next)=>
-{   
-   console.log("accepted");  
-   let {id}=req.params;
+router.get('/edit/:id',isLogedIn,checkOwner,listingController.editListing);
 
-   let user =await Listing.findById(id);
-   console.log(user);
-
-     res.render('editlisting',{data:user});
-});
-
-router.post('/edit/confirmEdit',wrapAsync(async (req,res,next)=>
-{
-    try
-    {    
-           let data= req.body;
-          
-    await Listing.findByIdAndUpdate(data._id,data,{runValidators: true,new:true}).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
-    
-    
-    }catch(err)
-    {
-        req.flash("error",err.message);
-   
-    }
-    req.flash("success","listing Edited successfully");
-     res.redirect('/wanderlust/allListings');
-}));
+// Confirm Edit
+router.post('/edit/confirmEdit',isLogedIn,upload.single('image'),wrapAsync(listingController.confirmEdit));
 
 
-// NewListings
-router.get('/new',isLogedIn,(req,res)=>
-{  
-    console.log(req.user);
-    res.render('newListing.ejs');
+// // NewListings Form
+// router.get('/addnew',isLogedIn,listingController.newListing);
 
-       
-});
+// // Add newlisting
+// router.post('/addnew',wrapAsync(listingController.addNewListing));
 
-router.post('/addnew',wrapAsync(async(req,res,next)=>
-{   
-    let data=req.body;
-  
-    if(!data)
-    {
-      return next(new ExpressError(400,"Bad Request"));
-    }
-    
-    req.flash("success","Listing added successfully");
-     
-    
-    // console.log(req.flash("success"));
-    let nwlisting=new Listing(data);
-    // nwlisting.owner=req.user.
-    // console.log(req);
-    // console.log(req.user);
 
-    nwlisting.owner=req.user._id;
-    await nwlisting.save();
-
-    res.redirect('/wanderlust/allListings'); 
-}));
-
+router.route('/addnew')
+      .get(isLogedIn,listingController.newListing)
+      .post(isLogedIn,upload.single('image'),wrapAsync(listingController.addNewListing));
+    // .post(upload.single('image'),(req,res)=>
+    // {
+    //     res.send(req.file.path);
+    // });
 
 // AddReview
 // router.post('/addReview',async (req,res)=>
@@ -159,42 +200,8 @@ router.post('/addnew',wrapAsync(async(req,res,next)=>
 // });
 
 // Deleting Listing from Indetail
-router.delete('/delete/:id',isLogedIn,checkOwner,wrapAsync(async(req,res)=>
-{   
-     let id =req.params.id;
- 
 
-    console.log(req.params);
-    // let listing=await Listing.findById(id);
-    // if(!listing.owner._id.equals(res.locals.currUser._id))
-    // {  
-    //    req.flash('error','You are not the owner of this Listing');
-     
-    //    return res.redirect(`/wanderlust/indetail/${id}`);
-    // }
-
-    let deletedlisting=await Listing.findByIdAndDelete(id);
-    
-    if(deletedlisting)
-    {
-      req.flash("success","Listing Deleted Successfully");
-    }
-    else
-    {
-       req.flash("error","Listing Already Deleted");
-    }
-    // console.log(deletedlisting);
-    
-    
-    res.redirect('/wanderlust/allListings');
-
-}));
-
-
-
-
-
-
+router.delete('/delete/:id',isLogedIn,checkOwner,wrapAsync(listingController.deleteListing));
 
 
 module.exports=router;

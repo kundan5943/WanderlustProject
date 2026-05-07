@@ -4,9 +4,9 @@
      
       <div class="col-10 offset-3 shw">
       
-          <h3 style="margin-left: 20px; margin-top: 10px;"><%=data.title%></h3>
+          <h3 style="margin-left: 20px; margin-top: 10px; width: 500px;"><%=data.title%></h3>
 <div class="card col-6 " >
-  <img src="<%=data.image%>" class="card-img-top shw-img" alt="...">
+  <img src="<%=data.image.url%>" class="card-img-top shw-img" alt="...">
   <div class="card-body">
      <%if(data.owner){%>
      <p class="card-text" style="margin-top: 5px;"><b>Owned by:</b><%=data.owner.username%></p>
@@ -18,7 +18,9 @@
 
      <%if(data.owner&&currUser){%>
      <%if(data.owner._id.equals(currUser._id)){%>
-       <form style="display: inline-block;"  action="/wanderlust/edit/<%=data._id%>" method="get">
+
+      
+          <form style="display: inline-block;"  action="/wanderlust/edit/<%=data._id%>" method="get">
                <button class="btn btn-primary addbtn" type="submit">Edit</button>
               
           </form>
@@ -41,12 +43,29 @@
   <!-- Add review -->
      <%if(currUser){%>
   <div class="needs-validation" novalidate>
-  <h3>Add review</h3>
+  <h3>Leave a review</h3>
      
      <form action="/wanderlust/review/<%=data._id%>/addReview" method="post"  class="needs-validation" novalidate>
-      <label class="form-label" for="rvw" >Rating</label>
+      <!-- <label class="form-label" for="rvw" >Rating</label>
       <input  class="form-control" type="range" min="1" max="5" name="rating" id="rvw"  required type="range">
+       -->
+      <label for="first-rate1">rating</label>
       <br>
+          <fieldset class="starability-slot">
+      <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="1" checked aria-label="No rating." />
+      <input type="radio" id="first-rate1" name="rating" value="1" />
+      <label for="first-rate1" title="Terrible">1 star</label>
+      <input type="radio" id="first-rate2" name="rating" value="2" />
+      <label for="first-rate2" title="Not good">2 stars</label>
+      <input type="radio" id="first-rate3" name="rating" value="3" />
+      <label for="first-rate3" title="Average">3 stars</label>
+      <input type="radio" id="first-rate4" name="rating" value="4" />
+      <label for="first-rate4" title="Very good">4 stars</label>
+      <input type="radio" id="first-rate5" name="rating" value="5" />
+      <label for="first-rate5" title="Amazing">5 stars</label>
+    </fieldset>
+  
+
       <div>
       <label class="form-label" for="cmnt">Comment</label>
       <textarea class="form-control" type="text" name="comment" id="cmnt" required ></textarea>
@@ -75,9 +94,12 @@
        <div class="card " style="width: 15rem; ">
   <div class="card-body">
     <h5 class="card-title">@<%=review.author.username%></h5>
-    <h6 class="card-subtitle mb-2 text-body-secondary">
+    <!-- <h6 class="card-subtitle mb-2 text-body-secondary">
       rating: <%=review.rating%>
-    </h6>
+    </h6> -->
+    <p class="starability-result" data-rating="<%=review.rating%>">
+   
+    </p>
     
     <p class="card-text"><%=review.comment%></p>
        <%if(currUser){%>

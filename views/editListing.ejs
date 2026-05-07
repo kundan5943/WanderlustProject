@@ -5,7 +5,7 @@
        
         <div class="col-8 offset-2">
              <H3>Edit Your Listing</H3>
-   <form class="row g-0.5 needs-validation" novalidate method="post" action="/wanderlust/edit/confirmEdit">
+   <form class="row g-0.5 needs-validation" novalidate method="post" action="/wanderlust/edit/confirmEdit" enctype="multipart/form-data">
   <div class="col-md-12">
     <input type="hidden" name="_id" value="<%=data._id%>">
     <label for="title" class="form-label">Title</label>
@@ -27,10 +27,23 @@
       Looks good!
     </div>
   </div>
-  <div class="col-12">
+  <!-- <div class="col-12">
     <label for="image" class="form-label">Image</label>
-    <input type="text" class="form-control" name="image" id="image" value="<%=data.image%>" required>
+    <input type="text" class="form-control" name="image" id="image" value="" required>
+  </div> -->
+  
+      <br><br>
+    <div class="col-md-4 mb-3">
+       Original Image
+       <br>
+       <img src="<%=ogurl%>" class="img-fluid "  style="border-radius: 5px; height: 180px;">
+    </div>
+    <br>
+   <div class="col-12">
+    <label for="image" class="form-label">Upload New Image</label>
+    <input type="file" class="form-control" name="image" id="image"  >
   </div>
+
   <div class="col-md-6">
     <label for="price" class="form-label"> Price</label>
     <input type="text" class="form-control" name="price" id="price" value="<%=data.price%>"required>
