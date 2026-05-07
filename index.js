@@ -23,12 +23,9 @@ const { Review, reviewSchema } = require("./Model/Review.js");
 
 const wrapAsync = require("./util/wrapAsync");
 app.engine("ejs", ejsMate);
-
+console.log(process.env.mongodbAtlas_Url);
 const store = MongoStore.create({
   mongoUrl: process.env.mongodbAtlas_Url,
-  crypto: {
-    secret: "mysecretcode",
-  },
   touchAfter: 24 * 3600,
 });
 const sessionOption = {
